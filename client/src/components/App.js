@@ -1,7 +1,7 @@
 import React, { Suspense } from "react";
 import { Route, Switch } from "react-router-dom";
 import Auth from "../hoc/auth";
-
+import UploadProductPage from "./views/Uploadpages/UploadProductPage";
 import LandingPage from "./views/LandingPage/LandingPage.js";
 import LoginPage from "./views/LoginPage/LoginPage.js";
 import RegisterPage from "./views/RegisterPage/RegisterPage.js";
@@ -17,6 +17,11 @@ function App() {
           <Route exact path="/" component={Auth(LandingPage, null)} />
           <Route exact path="/login" component={Auth(LoginPage, false)} />
           <Route exact path="/register" component={Auth(RegisterPage, false)} />
+          <Route
+            exact
+            path="/product/upload"
+            component={Auth(UploadProductPage, true)}
+          />
         </Switch>
       </div>
       <Footer />
