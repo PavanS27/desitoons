@@ -11,6 +11,10 @@ function LandingPage() {
   const [Skip, setSkip] = useState(0);
   const [Limit, setLimit] = useState(8);
   const [PostSize, setPostSize] = useState(0);
+  const [Filters, setFilters] = useState({
+    continents: [],
+    price: [],
+  });
 
   useEffect(() => {
     const variables = {
@@ -33,7 +37,12 @@ function LandingPage() {
   const getProducts = (variables) => {
     Axios.post("/api/product/getProducts", variables).then((res) => {
       if (res.data.success) {
-        setProducts([...products, ...res.data.products]);
+        if (variables.loadMore) {
+          setProducts([...products, ...res.data.products]);
+        } else {
+          setProducts(res.data.products);
+        }
+
         setPostSize(res.data.postSize);
 
         console.log([...products, ...res.data.products]);
@@ -47,12 +56,36 @@ function LandingPage() {
     const variables = {
       skip: skip,
       limit: Limit,
+      loadMore: true,
     };
     getProducts(variables);
     setSkip(skip);
   };
 
-  const handleFilters = (filters, category) => {};
+  const showFilterResults = (filters) => {
+    const variables = {
+      skip: 0,
+      limit: Limit,
+      filters: filters,
+    };
+    getProducts(variables);
+
+    setSkip(0);
+  };
+
+  const handleFilters = (filters, category) => {
+    console.log(filters);
+    const newFilters = { ...Filters };
+
+    newFilters[category] = filters;
+
+    if (category === "price") {
+    }
+
+    showFilterResults(newFilters);
+
+    setFilters(newFilters);
+  };
   return (
     <>
       <div style={{ width: "75%", margin: "3rem auto" }}>

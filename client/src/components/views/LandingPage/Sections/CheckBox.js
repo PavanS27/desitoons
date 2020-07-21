@@ -34,7 +34,7 @@ const continents = [
   },
 ];
 
-function CheckBox() {
+function CheckBox(props) {
   const [Checked, setChecked] = useState([]);
 
   const handleToggle = (value) => {
@@ -51,19 +51,20 @@ function CheckBox() {
   };
   const renderCheckBoxList = () =>
     continents.map((value, index) => (
-      <>
+      <React.Fragment key={index}>
         <Checkbox
           onChange={() => handleToggle(value._id)}
-          type="checkbox checked"
+          type="checkbox"
+          checked={Checked.indexOf(value._id) === -1 ? false : true}
         />
         <span>{value.name}</span>
-      </>
+      </React.Fragment>
     ));
   return (
     <div>
       <Collapse defaultActiveKey={["0"]}>
         <Panel header key="1">
-          {renderCheckBoxList}
+          {renderCheckBoxList()}
         </Panel>
       </Collapse>
     </div>
