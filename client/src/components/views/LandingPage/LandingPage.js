@@ -5,12 +5,14 @@ import { Icon, Row, Col, Card } from "antd";
 import Meta from "antd/lib/card/Meta";
 import ImageSlider from "../../Utils/ImageSlider";
 import CheckBox from "./Sections/CheckBox";
+import SearchFeature from "./Sections/SearchFeature";
 
 function LandingPage() {
   const [products, setProducts] = useState([]);
   const [Skip, setSkip] = useState(0);
   const [Limit, setLimit] = useState(8);
   const [PostSize, setPostSize] = useState(0);
+  const [SearchTerm, setSearchTerm] = useState("");
   const [Filters, setFilters] = useState({
     continents: [],
     price: [],
@@ -86,6 +88,18 @@ function LandingPage() {
 
     setFilters(newFilters);
   };
+
+  const updateSearchTerm = (newSearchterm) => {
+    const variables = {
+      skip: 0,
+      limit: Limit,
+      filters: Filters,
+      searchTerm: newSearchterm,
+    };
+    setSkip(0);
+    setSearchTerm(newSearchterm);
+    getProducts(variables);
+  };
   return (
     <>
       <div style={{ width: "75%", margin: "3rem auto" }}>
@@ -94,10 +108,22 @@ function LandingPage() {
             Lets Travel anywhere <Icon type="rocket" />
           </h2>
         </div>
+        <Row gutter={[16, 16]}>
+          <Col lg={12} xs={24}></Col>
+        </Row>
 
         <CheckBox
           handleFilters={(filters) => handleFilters(filters, "continents")}
         />
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "flex-end",
+            margin: "1rem auto",
+          }}
+        >
+          <SearchFeature refreshFunction={updateSearchTerm} />
+        </div>
 
         {products.length === 0 ? (
           <div
