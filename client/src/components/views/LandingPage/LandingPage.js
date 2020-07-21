@@ -4,6 +4,7 @@ import Axios from "axios";
 import { Icon, Row, Col, Card } from "antd";
 import Meta from "antd/lib/card/Meta";
 import ImageSlider from "../../Utils/ImageSlider";
+import CheckBox from "./Sections/CheckBox";
 
 function LandingPage() {
   const [products, setProducts] = useState([]);
@@ -50,6 +51,8 @@ function LandingPage() {
     getProducts(variables);
     setSkip(skip);
   };
+
+  const handleFilters = (filters, category) => {};
   return (
     <>
       <div style={{ width: "75%", margin: "3rem auto" }}>
@@ -58,6 +61,10 @@ function LandingPage() {
             Lets Travel anywhere <Icon type="rocket" />
           </h2>
         </div>
+
+        <CheckBox
+          handleFilters={(filters) => handleFilters(filters, "continents")}
+        />
 
         {products.length === 0 ? (
           <div
