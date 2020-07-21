@@ -57,13 +57,15 @@ function CheckBox(props) {
           type="checkbox"
           checked={Checked.indexOf(value._id) === -1 ? false : true}
         />
-        <span>{value.name}</span>
+        <span style={{ paddingRight: "10px", paddingLeft: "3px" }}>
+          {value.name}
+        </span>
       </React.Fragment>
     ));
   return (
     <div>
       <Collapse defaultActiveKey={["0"]}>
-        <Panel header key="1">
+        <Panel header="Continents filter" key="1">
           {renderCheckBoxList()}
         </Panel>
       </Collapse>
