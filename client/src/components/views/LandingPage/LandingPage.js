@@ -7,17 +7,16 @@ import ImageSlider from "../../Utils/ImageSlider";
 
 function LandingPage() {
   const [products, setProducts] = useState([]);
+  const [Skip, setSkip] = useState(0);
+  const [Limit, setLimit] = useState(8);
+  const [PostSize, setPostSize] = useState(0);
 
   useEffect(() => {
-    Axios.post("/api/product/getProducts").then((res) => {
-      if (res.data.success) {
-        setProducts(res.data.products);
-
-        console.log(res.data.products);
-      } else {
-        alert("failed to fecth product data");
-      }
-    });
+    const variables = {
+      skip: Skip,
+      limit: Limit,
+    };
+    getProducts(variables);
   }, []);
 
   const renderCards = products.map((product, index) => {
@@ -29,6 +28,28 @@ function LandingPage() {
       </Col>
     );
   });
+
+  const getProducts = (variables) => {
+    Axios.post("/api/product/getProducts", variables).then((res) => {
+      if (res.data.success) {
+        setProducts([...products, ...res.data.products]);
+        setPostSize(res.data.postSize);
+
+        console.log([...products, ...res.data.products]);
+      } else {
+        alert("failed to fecth product data");
+      }
+    });
+  };
+  const onLoadMore = () => {
+    let skip = Skip + Limit;
+    const variables = {
+      skip: skip,
+      limit: Limit,
+    };
+    getProducts(variables);
+    setSkip(skip);
+  };
   return (
     <>
       <div style={{ width: "75%", margin: "3rem auto" }}>
@@ -56,9 +77,11 @@ function LandingPage() {
         )}
         <br />
         <br />
-        <div style={{ display: "flex", justifyContent: "center" }}>
-          <button>Load more</button>
-        </div>
+        {PostSize >= Limit && (
+          <div style={{ display: "flex", justifyContent: "center" }}>
+            <button onClick={onLoadMore}>Load more</button>
+          </div>
+        )}
       </div>
     </>
   );
