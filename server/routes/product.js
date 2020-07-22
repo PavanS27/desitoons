@@ -86,7 +86,7 @@ router.post("/getProducts", (req, res) => {
       });
   }
 });
-router.get("/products_by_id", auth, (req, res) => {
+router.get("/products_by_id", (req, res) => {
   let type = req.query.type;
   let productIds = req.query.id;
 
